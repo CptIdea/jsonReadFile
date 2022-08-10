@@ -3,18 +3,18 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 )
 
 func ReadJsonFile(path string, out interface{}) error {
-	bytes, err := ioutil.ReadFile(path)
+	file, err := os.Open(path)
 	if err != nil {
-		return fmt.Errorf("read file error: %w", err)
+		return fmt.Errorf("open file error: %w", err)
 	}
 
-	err = json.Unmarshal(bytes, out)
+	err = json.NewDecoder(file).Decode(out)
 	if err != nil {
-		return fmt.Errorf("unmarshal error: %w", err)
+		return fmt.Errorf("decode json error: %w", err)
 	}
 
 	return nil
